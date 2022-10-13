@@ -1,46 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, Image, View, FlatList, TouchableOpacity } from 'react-native';
 
 
 export default function Feed({ navigation }){
-	const feed= [
-		{
-			id: 1,
-			tamanho: 'Açai 200ml',
-			preço: 'R$ 7,00',
-			src: 'https://imagenspng.com/wp-content/uploads/copo-de-acai-png-Imagem-sem-fundo.png',
-		},
-		{
-			id: 2,
-			tamanho: 'Açai 250ml',
-			preço: 'R$ 8,00',
-			src: 'https://imagenspng.com/wp-content/uploads/copo-de-acai-png-Imagem-sem-fundo.png',
-		},
-		{
-			id: 3,
-			tamanho: 'Açai 300ml',
-			preço: 'R$ 9,00',
-			src: 'https://imagenspng.com/wp-content/uploads/copo-de-acai-png-Imagem-sem-fundo.png',
-		},
-		{
-			id: 4,
-			tamanho: 'Açai 400ml',
-			preço: 'R$ 10,00',
-			src: 'https://imagenspng.com/wp-content/uploads/copo-de-acai-png-Imagem-sem-fundo.png',
-		},
-		{
-			id: 5,
-			tamanho: 'Açai 500ml',
-			preço: 'R$ 13,00',
-			src: 'https://imagenspng.com/wp-content/uploads/copo-de-acai-png-Imagem-sem-fundo.png',
-		},
-	];
+	const [feed, setFeed] = useState([]);
+	useEffect(()=>{
+		async function getData(){
+			const response = await fetch('https://raw.githubusercontent.com/viniciuspaiva1/JSON-Fake/main/produtosFeed.JSON');
+			const feedServidor = await response.json();
+			setFeed(feedServidor);
+		}
+		getData();
+	},[])
+	
 	function renderItem({ item }){
-		return <TouchableOpacity style={styles.medidas} onPress={() => navigation.navigate('CheckOrder')}>
-			  <Text>{item.tamanho}</Text>
-			  <Text>{item.preço}</Text>
-			  <View style={styles.copos}>
-				<Image source={{ uri: item.src }} style={styles.copo}/>
+		return <TouchableOpacity style = {styles.selectBox} onPress={() => navigation.navigate('CheckOrder')}>
+			  <View style={styles.divFlex}>
+				<View style = {styles.div1}>
+					<Text>{item.nomeProduto}</Text>
+					<Text>{item.detalhe}</Text>
+				</View>
+				<View style = {styles.div2}>
+					<Text>{item.preco}</Text>
+					<Image style={styles.imagem} source={{ uri: item.imgProduto }} />
+				</View>
 			  </View>
 		   </TouchableOpacity>
 		   
@@ -59,12 +42,38 @@ export default function Feed({ navigation }){
 const styles= StyleSheet.create({	
 	feed: {
 	  flex: 1,
-	  backgroundColor: 'grey',
+	  backgroundColor: 'gray',
+	  justifyContent: "space-between"
+	},
+	selectBox:{
+		height: 160,
+		padding: 8
+	},
+	divFlex:{
+		flex: 1,
+		flexDirection: "row",
+		justifyContent: 'space-between',
+		padding: 10,
+		backgroundColor: "white"
+	},
+	div1: {
+		flexDirection: "column",
+		alignItems: "flex-start",
+		marginTop: 10,
+		padding: 5,
+		paddingTop: 30
+	},
+	div2: {
+		width: 160,
+		padding: 5,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
 	},
 	medidas: {
-	  backgroundColor: '#fff',
-	  height: 180,
-	  padding: 30,
+
+	  flex:1,
+	  backgroundColor: 'green',
 	  flexDirection: 'row',
 	  alignItems: 'center',
 	  justifyContent: 'space-between',
@@ -72,10 +81,8 @@ const styles= StyleSheet.create({
 	  marginLeft: 10,
 	  marginRight: 10,
 	},
-	copos: {
-	  alignItems: 'flex-end',
-	},
-	copo: {
+	
+	imagem: {
 	  height: 80,
 	  width: 80,
 	},
