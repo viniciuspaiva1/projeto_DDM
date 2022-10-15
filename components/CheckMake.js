@@ -18,53 +18,54 @@ export default function Feed({ navigation }){
 		return <View style = {styles.divFlex}>
 				<View style = {styles.div1}> 
 					<Text style = {styles.titulo}>{item.titulo1}</Text>
-					<View style = {styles.div2}>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.cremes[0]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.cremes[1]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.cremes[2]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.cremes[3]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
+					</TouchableOpacity>
 				</View>
 				<View style = {styles.div1}>
 					<Text style = {styles.titulo}>{item.titulo2}</Text>
-					<View style = {styles.div2}>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[0]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+						
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[1]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[2]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[3]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+						<Text style = {styles.ingrediente}>"-   +"</Text>						
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[4]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+						<Text style = {styles.ingrediente}>"-   +"</Text>						
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[5]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
-					<View style = {styles.div2}>
+						<Text style = {styles.ingrediente}>"-   +"</Text>						
+					</TouchableOpacity>
+					<TouchableOpacity style = {styles.div2}>
 						<Text style = {styles.ingrediente}>{item.recheios[6]}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</View>
+					</TouchableOpacity>
 				</View>
 				
 			</View>
@@ -100,18 +101,22 @@ const styles= StyleSheet.create({
 	},
 	div1: {
 		flexDirection: "column",
-		backgroundColor: "green",
+		backgroundColor: "#faf0e6",
 		justifyContent: 'space-between',
 		marginTop: 5,
 		padding: 5,
-		paddingTop: 30
+		paddingTop: 30,
+		borderRadius: 5,
 	},
 	div2: {
 		width: 360,
 		padding: 15,
+		margin: 5,
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
+		backgroundColor: "#B0E0E6",
+		borderRadius: 5
 	},
 	titulo: {
 		fontSize: 30,

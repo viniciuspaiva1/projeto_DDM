@@ -42,7 +42,7 @@ export default function Feed({ navigation }){
 const styles= StyleSheet.create({	
 	feed: {
 	  flex: 1,
-	  backgroundColor: 'gray',
+	  backgroundColor: 'white',
 	  justifyContent: "space-between"
 	},
 	selectBox:{
@@ -54,14 +54,15 @@ const styles= StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: 'space-between',
 		padding: 10,
-		backgroundColor: "white"
+		backgroundColor: "#B0E0E6",
+		borderRadius: 5,
 	},
 	div1: {
 		flexDirection: "column",
 		alignItems: "flex-start",
 		marginTop: 10,
 		padding: 5,
-		paddingTop: 30
+		paddingTop: 30,
 	},
 	div2: {
 		width: 160,
@@ -70,18 +71,7 @@ const styles= StyleSheet.create({
 		justifyContent: "space-between",
 		alignItems: "center",
 	},
-	medidas: {
 
-	  flex:1,
-	  backgroundColor: 'green',
-	  flexDirection: 'row',
-	  alignItems: 'center',
-	  justifyContent: 'space-between',
-	  marginBottom: 8,
-	  marginLeft: 10,
-	  marginRight: 10,
-	},
-	
 	imagem: {
 	  height: 80,
 	  width: 80,

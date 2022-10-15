@@ -10,8 +10,8 @@ export default function App(){
   return(
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/> 
-        <Stack.Screen name="CheckOrder" component={CheckOrder} options ={{headerShown: false}}/>       
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false }}/> 
+        <Stack.Screen name="CheckOrder" component={CheckOrder} options ={{title: "Monte seu Pedido"}}/>       
       </Stack.Navigator>
     </NavigationContainer>
   );
