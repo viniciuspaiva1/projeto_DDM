@@ -4,7 +4,9 @@ import { StyleSheet, Text, Image, View, FlatList, TouchableOpacity, CheckBox} fr
 
 export default function Feed({ navigation }){
 	const [feed, setFeed] = useState([]);
+	const [click, setClick] = useState(false);
 	
+
 	useEffect(()=>{
 		async function getData(){
 			const response = await fetch('https://raw.githubusercontent.com/viniciuspaiva1/JSON-Fake/main/ingredientes.JSON');
@@ -14,58 +16,36 @@ export default function Feed({ navigation }){
 		getData();
 	},[])
 	
+	
+
 	function renderItem({ item }){
 		return <View style = {styles.divFlex}>
 				<View style = {styles.div1}> 
 					<Text style = {styles.titulo}>{item.titulo1}</Text>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.cremes[0]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.cremes[1]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.cremes[2]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.cremes[3]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
+					{
+						
+						item.cremes.map((creme,idx) => <TouchableOpacity 
+						style ={click ? styles.divClicked : styles.div2}
+						onPress = {()=>{
+							setClick(!click);
+							console.log(click);
+							
+						}}>
+							<Text style = {styles.ingrediente}>{creme}</Text>
+							<Text style = {styles.ingrediente}>"-   +"</Text>
+						</TouchableOpacity>)
+						
+						
+					}
 				</View>
 				<View style = {styles.div1}>
 					<Text style = {styles.titulo}>{item.titulo2}</Text>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[0]}</Text>
+					{
+						item.recheios.map((recheio,idx) => <TouchableOpacity style = {styles.div2}>
+						<Text style = {styles.ingrediente}>{recheio}</Text>
 						<Text style = {styles.ingrediente}>"-   +"</Text>
-						
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[1]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[2]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[3]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>						
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[4]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>						
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[5]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>						
-					</TouchableOpacity>
-					<TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{item.recheios[6]}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>
+					</TouchableOpacity>)
+					}
 				</View>
 				
 			</View>
@@ -107,6 +87,16 @@ const styles= StyleSheet.create({
 		padding: 5,
 		paddingTop: 30,
 		borderRadius: 5,
+	},
+	divClicked: {
+		width: 360,
+		padding: 15,
+		margin: 5,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		backgroundColor: "#90EE90",
+		borderRadius: 5
 	},
 	div2: {
 		width: 360,
