@@ -1,69 +1,123 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, View, FlatList, TouchableOpacity, CheckBox} from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, CheckBox, ScrollView} from 'react-native';
+
+import { db } from "../config/firebase";
+import { 
+  addDoc, 
+  collection, 
+  deleteDoc, 
+  doc, 
+  getDocs, 
+  onSnapshot, 
+  query, 
+  updateDoc, 
+  where
+} from "firebase/firestore";
 
 
-export default function Feed({ navigation }){
-	const [feed, setFeed] = useState([]);
+export default function CheckMake({ navigation }){
+	const [cremes, setCremes] = useState([]);
+	const [recheios, setRecheios] = useState([]);
+	
 	const [click, setClick] = useState(false);
 	
 
 	useEffect(()=>{
-		async function getData(){
-			const response = await fetch('https://raw.githubusercontent.com/viniciuspaiva1/JSON-Fake/main/ingredientes.JSON');
-			const checkServidor = await response.json();
-			setFeed(checkServidor);
+		async function carregaDadosCremes(){
+			const cremesFirestore = await getCreme();
+			setCremes(cremesFirestore);
 		}
-		getData();
-	},[])
+		carregaDadosCremes();
+	},[]);
 	
-	
+	async function getCreme(){
+		try{
+			const cremeSnapshot = await getDocs(collection(db, "cremes"));
+			let cremes = [];
+			cremeSnapshot.forEach((doc) => {
+				let creme = { id: doc.id, ...doc.data()};
+				cremes.push(creme);
+			});
+			return cremes
+		}catch(error){
+			console.log(error);
+			return[]
+		}
+	};
 
-	function renderItem({ item }){
-		return <View style = {styles.divFlex}>
-				<View style = {styles.div1}> 
-					<Text style = {styles.titulo}>{item.titulo1}</Text>
-					{
-						
-						item.cremes.map((creme,idx) => <TouchableOpacity 
-						style ={click ? styles.divClicked : styles.div2}
-						onPress = {()=>{
-							setClick(!click);
-							console.log(click);
-							
-						}}>
-							<Text style = {styles.ingrediente}>{creme}</Text>
-							<Text style = {styles.ingrediente}>"-   +"</Text>
-						</TouchableOpacity>)
-						
-						
-					}
-				</View>
-				<View style = {styles.div1}>
-					<Text style = {styles.titulo}>{item.titulo2}</Text>
-					{
-						item.recheios.map((recheio,idx) => <TouchableOpacity style = {styles.div2}>
-						<Text style = {styles.ingrediente}>{recheio}</Text>
-						<Text style = {styles.ingrediente}>"-   +"</Text>
-					</TouchableOpacity>)
-					}
-				</View>
-				
-			</View>
-		   
-	}
+	useEffect(()=>{
+		async function carregaDadosRecheios(){
+			const recheiosFirestore = await getRecheios();
+			setRecheios(recheiosFirestore);
+		}
+		carregaDadosRecheios();
+	},[]);
+
+	async function getRecheios(){
+		try{
+			const recheiosSnapshot = await getDocs(collection(db, "recheios"));
+			let recheios = [];
+			recheiosSnapshot.forEach((doc) => {
+				let recheio = { id: doc.id, ...doc.data()};
+				recheios.push(recheio);
+			});
+			return recheios
+		}catch(error){
+			console.log(error);
+			return[]
+		}
+	};
+
 	return(
-		<View style={styles.feed}>
-			<FlatList
-				data={feed}
-				renderItem={renderItem}
-				keyExtractor={item => item.id}
-			/>
-      	</View>
+		<ScrollView>	
+			<View style={styles.list}>
+				<View style = {styles.divFlex}>
+					<View style = {styles.div1}> 
+						<Text style = {styles.titulo}>Cremes Disponíveis</Text>
+						{
+							cremes.map((creme)=> {
+								return<>
+								<TouchableOpacity 
+								style ={click ? styles.divClicked : styles.div2}
+								onPress = {()=>{
+										setClick(!click);
+										console.log(click);}} 
+									key={creme.id}>
+								<Text style = {styles.ingrediente}>{creme.nome}</Text>
+								<Text style = {styles.ingrediente}>"-   +"</Text>
+							</TouchableOpacity>
+								</>
+							})
+						}
+					</View>
+				</View>
+				<View style = {styles.divFlex}>
+					<View style = {styles.div1}> 
+						<Text style = {styles.titulo}>Recheios Disponíveis</Text>
+						{
+							recheios.map((recheio)=> {
+								return<>
+								<TouchableOpacity 
+								style ={click ? styles.divClicked : styles.div2}
+								onPress = {()=>{
+										setClick(!click);
+										console.log(click);}} 
+									key={recheio.id}>
+								<Text style = {styles.ingrediente}>{recheio.nome}</Text>
+								<Text style = {styles.ingrediente}>"-   +"</Text>
+							</TouchableOpacity>
+								</>
+							})
+						}
+					</View>
+				</View>
+			</View>
+		</ScrollView>
 	);
 }
 
 const styles= StyleSheet.create({	
-	feed: {
+	list: {
 	  flex: 1,
 	  backgroundColor: 'gray',
 	  justifyContent: "space-between"

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, View, FlatList, TouchableOpacity } from 'react-native';
+import React from 'react';
+import {View, FlatList } from 'react-native';
 
 export default function NaviBar({ navigation }){
 	return(
