@@ -1,26 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, CheckBox, ScrollView} from 'react-native';
 
-import { db } from "../config/firebase";
-import { 
-  addDoc, 
-  collection, 
-  deleteDoc, 
-  doc, 
-  getDocs, 
-  onSnapshot, 
-  query, 
-  updateDoc, 
-  where
-} from "firebase/firestore";
-
+import { getCreme, pegarCremeTempoReal, getRecheios, pegarRecheioTempoReal, atualizarProduto} from '../servicos/firebase/firestore'
 
 export default function CheckMake({ navigation }){
 	const [cremes, setCremes] = useState([]);
 	const [recheios, setRecheios] = useState([]);
-	
-	const [click, setClick] = useState(false);
-	
 
 	useEffect(()=>{
 		async function carregaDadosCremes(){
@@ -28,22 +13,8 @@ export default function CheckMake({ navigation }){
 			setCremes(cremesFirestore);
 		}
 		carregaDadosCremes();
+		pegarCremeTempoReal(setCremes);
 	},[]);
-	
-	async function getCreme(){
-		try{
-			const cremeSnapshot = await getDocs(collection(db, "cremes"));
-			let cremes = [];
-			cremeSnapshot.forEach((doc) => {
-				let creme = { id: doc.id, ...doc.data()};
-				cremes.push(creme);
-			});
-			return cremes
-		}catch(error){
-			console.log(error);
-			return[]
-		}
-	};
 
 	useEffect(()=>{
 		async function carregaDadosRecheios(){
@@ -51,23 +22,9 @@ export default function CheckMake({ navigation }){
 			setRecheios(recheiosFirestore);
 		}
 		carregaDadosRecheios();
+		pegarRecheioTempoReal(setRecheios);
 	},[]);
-
-	async function getRecheios(){
-		try{
-			const recheiosSnapshot = await getDocs(collection(db, "recheios"));
-			let recheios = [];
-			recheiosSnapshot.forEach((doc) => {
-				let recheio = { id: doc.id, ...doc.data()};
-				recheios.push(recheio);
-			});
-			return recheios
-		}catch(error){
-			console.log(error);
-			return[]
-		}
-	};
-
+	
 	return(
 		<ScrollView>	
 			<View style={styles.list}>
@@ -76,17 +33,17 @@ export default function CheckMake({ navigation }){
 						<Text style = {styles.titulo}>Cremes Disponíveis</Text>
 						{
 							cremes.map((creme)=> {
-								return<>
-								<TouchableOpacity 
-								style ={click ? styles.divClicked : styles.div2}
-								onPress = {()=>{
-										setClick(!click);
-										console.log(click);}} 
-									key={creme.id}>
+								return(
+									<TouchableOpacity 
+									style ={creme.click ? styles.divClicked : styles.div2}
+									onPress = {()=>{
+										atualizarProduto(creme.id, "cremes", { click: !creme.click });
+									}}
+										key={creme.id}>
 								<Text style = {styles.ingrediente}>{creme.nome}</Text>
 								<Text style = {styles.ingrediente}>"-   +"</Text>
 							</TouchableOpacity>
-								</>
+									)
 							})
 						}
 					</View>
@@ -96,17 +53,17 @@ export default function CheckMake({ navigation }){
 						<Text style = {styles.titulo}>Recheios Disponíveis</Text>
 						{
 							recheios.map((recheio)=> {
-								return<>
-								<TouchableOpacity 
-								style ={click ? styles.divClicked : styles.div2}
-								onPress = {()=>{
-										setClick(!click);
-										console.log(click);}} 
-									key={recheio.id}>
-								<Text style = {styles.ingrediente}>{recheio.nome}</Text>
-								<Text style = {styles.ingrediente}>"-   +"</Text>
-							</TouchableOpacity>
-								</>
+								return(
+									<TouchableOpacity 
+									style ={recheio.click ? styles.divClicked : styles.div2}
+									onPress = {()=>{
+										atualizarProduto(recheio.id, "recheios", { click: !recheio.click });
+									}}
+										key={recheio.id}>
+										<Text style = {styles.ingrediente}>{recheio.nome}</Text>
+										<Text style = {styles.ingrediente}>"-   +"</Text>
+									</TouchableOpacity>
+									)
 							})
 						}
 					</View>

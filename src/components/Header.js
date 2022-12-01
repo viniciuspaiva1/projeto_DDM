@@ -5,7 +5,7 @@ import { StyleSheet, Image, View } from 'react-native';
 export default function Header({ }){
 	return(
     <View style={styles.header}>
-    <Image style={styles.logo} source={require('../assets/images/AcaiLogo.jpg')}/>
+    <Image style={styles.logo} source={require('../../assets/images/AcaiLogo.jpg')}/>
   </View>
 	);	
 }
