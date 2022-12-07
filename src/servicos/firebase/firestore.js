@@ -1,8 +1,6 @@
 import { db } from "../../../config/firebase";
 import { 
-  addDoc, 
   collection, 
-  deleteDoc, 
   doc, 
   getDocs, 
   onSnapshot, 
@@ -10,7 +8,7 @@ import {
   updateDoc, 
 } from "firebase/firestore";
 
-export async function getCreme(){
+export async function getCremes(){
     try{
         const cremeSnapshot = await getDocs(collection(db, "cremes"));
         let cremes = [];

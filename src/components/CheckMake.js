@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, CheckBox, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 
-import { getCreme, pegarCremeTempoReal, getRecheios, pegarRecheioTempoReal, atualizarProduto} from '../servicos/firebase/firestore'
+import { getCremes, pegarCremeTempoReal, getRecheios, pegarRecheioTempoReal, atualizarProduto} from '../servicos/firebase/firestore'
 
 export default function CheckMake({ navigation }){
 	const [cremes, setCremes] = useState([]);
+	const [cremeclick, setCremeclick] = useState([false, false, false]);
 	const [recheios, setRecheios] = useState([]);
 
 	useEffect(()=>{
 		async function carregaDadosCremes(){
-			const cremesFirestore = await getCreme();
+			const cremesFirestore = await getCremes();
 			setCremes(cremesFirestore);
 		}
 		carregaDadosCremes();
@@ -24,13 +25,13 @@ export default function CheckMake({ navigation }){
 		carregaDadosRecheios();
 		pegarRecheioTempoReal(setRecheios);
 	},[]);
-	
+
 	return(
 		<ScrollView>	
 			<View style={styles.list}>
 				<View style = {styles.divFlex}>
 					<View style = {styles.div1}> 
-						<Text style = {styles.titulo}>Cremes Disponíveis</Text>
+						<Text style = {styles.titulo}>Cremes Disponíveis:</Text>
 						{
 							cremes.map((creme)=> {
 								return(
@@ -40,9 +41,9 @@ export default function CheckMake({ navigation }){
 										atualizarProduto(creme.id, "cremes", { click: !creme.click });
 									}}
 										key={creme.id}>
-								<Text style = {styles.ingrediente}>{creme.nome}</Text>
-								<Text style = {styles.ingrediente}>"-   +"</Text>
-							</TouchableOpacity>
+										<Text style = {styles.ingrediente}>{creme.nome}</Text>
+										<Text style = {styles.ingrediente}>-   +</Text>
+									</TouchableOpacity>
 									)
 							})
 						}
@@ -50,7 +51,7 @@ export default function CheckMake({ navigation }){
 				</View>
 				<View style = {styles.divFlex}>
 					<View style = {styles.div1}> 
-						<Text style = {styles.titulo}>Recheios Disponíveis</Text>
+						<Text style = {styles.titulo}>Recheios Disponíveis:</Text>
 						{
 							recheios.map((recheio)=> {
 								return(
@@ -61,14 +62,17 @@ export default function CheckMake({ navigation }){
 									}}
 										key={recheio.id}>
 										<Text style = {styles.ingrediente}>{recheio.nome}</Text>
-										<Text style = {styles.ingrediente}>"-   +"</Text>
+										<Text style = {styles.ingrediente}>-   +</Text>
 									</TouchableOpacity>
 									)
 							})
 						}
 					</View>
-				</View>
+				<TouchableOpacity style={styles.submit} onPress={() => navigation.navigate('Orders')}>
+					<Text style={styles.submitText}>Fazer pedido</Text>
+				</TouchableOpacity>
 			</View>
+				</View>
 		</ScrollView>
 	);
 }
@@ -79,13 +83,10 @@ const styles= StyleSheet.create({
 	  backgroundColor: 'gray',
 	  justifyContent: "space-between"
 	},
-	selectBox:{
-		height: 160,
-		padding: 8
-	},
 	divFlex:{
 		flex: 1,
 		flexDirection: "column",
+		alignItems: 'center',
 		justifyContent: 'space-between',
 		padding: 10,
 		backgroundColor: "white"
@@ -96,7 +97,7 @@ const styles= StyleSheet.create({
 		justifyContent: 'space-between',
 		marginTop: 5,
 		padding: 5,
-		paddingTop: 30,
+		paddingTop: 10,
 		borderRadius: 5,
 	},
 	divClicked: {
@@ -124,8 +125,22 @@ const styles= StyleSheet.create({
 		fontStyle:"italic",
 		fontWeight: "bold"
 	},
-	
 	ingrediente: {
 	  fontSize: 20
 	},
+	submit: {
+		backgroundColor: 'green',
+		marginTop: 10,
+		margin: 5,
+		padding: 5,
+		borderRadius: 5,
+		height: 50,
+		width: 150,
+		alignItems: 'center',
+		justifyContent: 'center',
+
+	},
+	submitText: {
+		fontSize: 20,
+	}
   });
