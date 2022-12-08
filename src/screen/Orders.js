@@ -1,59 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { getCremes, pegarCremeTempoReal, getRecheios, pegarRecheioTempoReal, enviarPedido} from '../servicos/firebase/firestore'
 
 import Header from '../components/Header';
 
 export default function Orders({ navigation }){
 	const [cremes, setCremes] = useState([]);
-	const [cremeclick, setCremeclick] = useState([false, false, false]);
 	const [recheios, setRecheios] = useState([]);
   const [pedidocreme, setPedidoCreme] = useState([]);
   const [pedidorecheio, setPedidoRecheio] = useState([]);
 
 	useEffect(()=>{
-		async function carregaDadosCremes(){
+		async function carregaDados(){
 			const cremesFirestore = await getCremes();
 			setCremes(cremesFirestore);
-		}
-		carregaDadosCremes();
-		pegarCremeTempoReal(setCremes);
-	},[]);
-
-	useEffect(()=>{
-		async function carregaDadosRecheios(){
-			const recheiosFirestore = await getRecheios();
+      const recheiosFirestore = await getRecheios();
 			setRecheios(recheiosFirestore);
 		}
-		carregaDadosRecheios();
-		pegarRecheioTempoReal(setRecheios);
+		carregaDados();
+		pegarCremeTempoReal(setCremes);
+    pegarRecheioTempoReal(setRecheios);
 	},[]);
 
-  async function criarPedidoCreme(){
-      let vetor = [];
+  function criarPedidoCreme(){
+      let cremep = [];
       cremes.map((creme) => {
         if(creme.click){
-            vetor.push(creme.nome);
+            cremep.push(creme.nome);
         }
       })
-      setPedidoCreme(vetor);
-      console.log(pedidocreme);
+      setPedidoCreme(cremep);
   };
 
-  async function criarPedidoRecheio(){
-    let vetor1 = []; //bizarramente eu tenho que usar nomes distintos
+  function criarPedidoRecheio(){
+    let recheiop = [];
     recheios.map((recheio) => {
       if(recheio.click){
-          vetor1.push(recheio.nome);
+          recheiop.push(recheio.nome);
       }
     })
-    setPedidoRecheio(vetor1);
-    console.log(pedidorecheio);
+    setPedidoRecheio(recheiop);
 };
-async function enviar(){
-  await criarPedidoCreme();
-  await criarPedidoRecheio();
+  function enviar(){
+    criarPedidoCreme();
+    criarPedidoRecheio();
 }
 
   return(
@@ -94,7 +85,6 @@ async function enviar(){
 const styles= StyleSheet.create({
   container: {
     flex: 1,
-    
   },
   pedido: {
     flex: 1,

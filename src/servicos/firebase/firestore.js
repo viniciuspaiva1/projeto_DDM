@@ -73,9 +73,10 @@ export async function pegarCremeTempoReal(setCremes){
   }
 
   export async function enviarPedido(pedidocreme, pedidorecheio) {
-    if(pedidocreme.length <= 0 || pedidorecheio.length <= 0)
-      return;
-    try {
+    try {    
+      if(pedidocreme.length <= 0 || pedidorecheio.length <= 0){
+        return;
+      }
       const docRef = await addDoc(collection(db, "pedidos"), {
         cremes: pedidocreme,
         recheios: pedidorecheio
