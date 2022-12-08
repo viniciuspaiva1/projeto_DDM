@@ -1,6 +1,7 @@
 import { db } from "../../../config/firebase";
 import { 
   collection, 
+  addDoc,
   doc, 
   getDocs, 
   onSnapshot, 
@@ -70,3 +71,19 @@ export async function pegarCremeTempoReal(setCremes){
       return 'error';
     }
   }
+
+  export async function enviarPedido(pedidocreme, pedidorecheio) {
+    if(pedidocreme.length <= 0 || pedidorecheio.length <= 0)
+      return;
+    try {
+      const docRef = await addDoc(collection(db, "pedidos"), {
+        cremes: pedidocreme,
+        recheios: pedidorecheio
+      });
+      return 'ok';
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      return 'error';
+    }
+  }
+
