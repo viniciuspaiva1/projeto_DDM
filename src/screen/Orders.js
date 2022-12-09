@@ -71,13 +71,16 @@ export default function Orders({ navigation }){
             }
             
         </View>
-        <TouchableOpacity style={styles.submit} 
-        onPress={() => {
-            enviar();
-            enviarPedido(pedidocreme, pedidorecheio);
-        }}>
-				    <Text style={styles.submitText}>Confirmar pedido</Text>
-				 </TouchableOpacity>
+        <View style={styles.divcenter}>
+          <TouchableOpacity style={styles.submit} 
+          onPress={() => {
+              enviar();
+              enviarPedido(pedidocreme, pedidorecheio);
+          }}>
+              <Text style={styles.submitText}>Confirmar pedido</Text>
+          </TouchableOpacity>
+        </View>
+
     </View>
   );
 }
@@ -108,7 +111,7 @@ const styles= StyleSheet.create({
   },
   submit: {
 		backgroundColor: 'green',
-		marginTop: 10,
+		marginBottom: 20,
 		margin: 5,
 		padding: 5,
 		borderRadius: 5,
@@ -117,6 +120,10 @@ const styles= StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 
-	}
+	},
+  divcenter: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });
 
